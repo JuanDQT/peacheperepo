@@ -9,8 +9,13 @@
 require_once('dbConnect.php');
 
 $perfiles = [];
-foreach ($db->query("select prf_name from perfiles") as $item) {
-    $perfiles[] = $item['prf_name'];
+$stmt = $db->prepare("select prf_name from perfiles where 2>:num");
+$stmt->bindValue(':num', 1);
+if ($stmt->execute()) {
+    foreach ($stmt as $item) {
+        $perfiles[] = $item['prf_name'];
+    }
+
 }
 
 echo '<pre>';
